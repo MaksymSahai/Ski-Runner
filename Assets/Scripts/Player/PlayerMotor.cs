@@ -59,10 +59,10 @@ namespace Player
             }
         }
 
-        private void Death()
-        {
-            _isDead = true;
+        //private void Death()
+        //{
+          //  _isDead = true;
             //_scoreHealper.OnDeath();
-        }
+        //}
     }
 }
