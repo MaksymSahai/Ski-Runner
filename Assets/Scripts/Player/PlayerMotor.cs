@@ -13,22 +13,27 @@ namespace Player
 
         private float _speed = 5.0f;
         private float _verticalVelocity = 0.0f;
-        private float _gravity = 12.0f;
+        ///private float _gravity = 12.0f;
 
-        //private float _animationDuration = 3.0f;
-        private float _startTime;
+        ///private float _startTime;
 
         private bool _isDead = false;
-       // private ScoreHelper _scoreHealper;
+        public bool IsDead { get { return _isDead; } }
+
+        private ScoreHelper _scoreHealper;
 
         void Start()
         {
             _controller = GetComponent<CharacterController>();
+            _scoreHealper = GetComponent<ScoreHelper>();
         }
 
 
         void Update()
         {
+            if (_isDead)
+                return;
+
             if (Time.time < _cameraMotor.AnimationDuration)
             {
                 _controller.Move(Vector3.forward * _speed * Time.deltaTime);
@@ -52,17 +57,18 @@ namespace Player
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
-            ///if(hit.gameObject.tag == "Enemy")
-            if (hit.point.z > transform.position.z + _controller.radius)
+            if (hit.gameObject.tag == StringConstants.EnemyTag)
             {
                 Death();
             }
         }
 
-        //private void Death()
-        //{
-          //  _isDead = true;
-            //_scoreHealper.OnDeath();
-        //}
+        private void Death()
+        {
+            _isDead = true;
+            Debug.Log(_isDead);
+            Debug.Log("Dead");
+            _scoreHealper.OnDeath();
+        }
     }
 }

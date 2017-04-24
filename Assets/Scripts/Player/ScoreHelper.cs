@@ -9,7 +9,7 @@ namespace Player
     {
 
         public Text ScoreText;
-        ///public DeathMenuScript DeathMenu;
+        public DeathMenuScript DeathMenu;
 
         private float _score = 0.0f;
 
@@ -17,7 +17,7 @@ namespace Player
         private int _maxDifficultyLevel = 10;
         private int _scoreToNextLevel = 10;
 
-        private bool _isDead = false;
+       /// private bool _isDead = false;
 
         private PlayerMotor _playerMotor;
 
@@ -30,7 +30,7 @@ namespace Player
         // Update is called once per frame
         private void Update()
         {
-            if (_isDead)
+            if (_playerMotor.IsDead)
                 return;
 
             if (_score >= _scoreToNextLevel)
@@ -54,11 +54,10 @@ namespace Player
 
         public void OnDeath()
         {
-            _isDead = true;
-
             if (PlayerPrefs.GetFloat("HightScore") < _score)
                 PlayerPrefs.SetFloat("HightScore", _score);
-            //DeathMenu.ToogleDeathMenu(_score);
+
+            DeathMenu.ToogleDeathMenu(_score);
         }
     }
 }
