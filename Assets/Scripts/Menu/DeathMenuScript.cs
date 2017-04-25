@@ -8,6 +8,7 @@ public class DeathMenuScript : MonoBehaviour
 {
     public Text ScoreText;
     public Image BackgroundImage;
+    public GameObject SwipePanel;
 
     private bool _isShowned = false;
     private float _transition = 0.0f;
@@ -30,6 +31,7 @@ public class DeathMenuScript : MonoBehaviour
     // Update is called once per frame
     public void ToogleDeathMenu(float score)
     {
+        SwipePanel.SetActive(value: false);
         gameObject.SetActive(value: true);
         ScoreText.text = ((int)score).ToString();
         _isShowned = true;
