@@ -36,7 +36,7 @@ namespace TileManager
         private void Awake()
         {
             var _light = GameObject.FindGameObjectWithTag("light").GetComponent<Light>();
-            _light.intensity = 1.6f;
+            _light.intensity = 0.7f;
 
         }
         // Update is called once per frame
