@@ -8,6 +8,7 @@ public class DeathMenuScript : MonoBehaviour
 {
     public Text ScoreText;
     public Image BackgroundImage;
+    public Text HightScore;
     public GameObject SwipePanel;
 
     private bool _isShowned = false;
@@ -34,6 +35,7 @@ public class DeathMenuScript : MonoBehaviour
         SwipePanel.SetActive(value: false);
         gameObject.SetActive(value: true);
         ScoreText.text = ((int)score).ToString();
+        HightScore.text = "Hightscore : " + ((int)PlayerPrefs.GetFloat("HightScore")).ToString();
         _isShowned = true;
     }
 
