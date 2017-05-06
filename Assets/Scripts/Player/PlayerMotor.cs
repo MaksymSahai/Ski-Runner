@@ -7,14 +7,10 @@ namespace Player
     public class PlayerMotor : MonoBehaviour
     {
         private CameraMotor _cameraMotor = new CameraMotor();
-        private CharacterController _controller;
-        private Vector3 _moveVector;
 
-        private float _speed = 5.0f;
-        private float _verticalVelocity = 0.0f;
-        ///private float _gravity = 12.0f;
+        private float _speed = -0.1f;
 
-        ///private float _startTime;
+        public float Speed { get { return _speed; } }
 
         private bool _isDead = false;
         public bool IsDead { get { return _isDead; } }
@@ -23,40 +19,23 @@ namespace Player
 
         void Start()
         {
-            _controller = GetComponent<CharacterController>();
             _scoreHealper = GetComponent<ScoreHelper>();
         }
 
 
         void Update()
         {
-            if (_isDead)
-                return;
-
-            if (Time.time < _cameraMotor.AnimationDuration)
-            {
-                _controller.Move(Vector3.forward * _speed * Time.deltaTime);
-                return;
-            }
-
-            _moveVector = Vector3.zero;
-
-            _moveVector.x = Input.GetAxisRaw("Horizontal") * _speed;
-            _moveVector.y = _verticalVelocity;
-            _moveVector.z = _speed;
-
-
-            _controller.Move(_moveVector * Time.deltaTime);
         }
 
-        public void SetSpeed(int modifier)
+        public void SetSpeed(float modifier)
         {
-            _speed = _speed + modifier;
+            _speed = (_speed + (modifier / 10) * -1)/2;
+            Debug.Log(_speed);
         }
 
-        private void OnControllerColliderHit(ControllerColliderHit hit)
+        private void OnCollisionEnter(Collision collision)
         {
-            if (hit.gameObject.tag == StringConstants.EnemyTag)
+            if (collision.gameObject.tag == StringConstants.EnemyTag)
             {
                 Death();
             }

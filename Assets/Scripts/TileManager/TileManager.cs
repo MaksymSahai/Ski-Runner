@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace TileManager
@@ -11,13 +12,25 @@ namespace TileManager
 
         private Transform _playerTransform;
         private float _spawnZ = 0.0f;
-        private float _saveZone = 10.0f;
-        private float _tileLength = 22.5f;
-        private int _amountTilesOnScreen = 4;
+        private float _tileLength = 11.3f;
+        private int _amountTilesOnScreen = 10;
 
         private int _lastPrefabIndex = 0;
 
         private List<GameObject> _activeTiles;
+
+        private static TileManager _instance;
+        
+        public static TileManager Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = GameObject.FindObjectOfType<TileManager>();
+
+                return _instance;
+            }
+        }
 
         // Use this for initialization
         private void Start()
@@ -26,10 +39,10 @@ namespace TileManager
             _playerTransform = GameObject.FindGameObjectWithTag(StringConstants.PlayerTag).transform;
             for (int i = 0; i < _amountTilesOnScreen; i++)
             {
-                if (i < 2)
-                    SpawnTile(0);
+                if (i < 5)
+                    SpawnTile(0, isStartSpawn: true);
                 else
-                    SpawnTile();
+                    SpawnTile(isStartSpawn: true);
             }
         }
 
@@ -39,32 +52,45 @@ namespace TileManager
             _light.intensity = 0.7f;
 
         }
-        // Update is called once per frame
-        private void Update()
+        private void OnCollisionEnter(Collision collision)
         {
-            if (_playerTransform.position.z - _saveZone > (_spawnZ - _amountTilesOnScreen * _tileLength))
+            if (collision.gameObject.tag == StringConstants.PlayerTag)
             {
                 SpawnTile();
                 DeleteTile();
             }
         }
 
-        private void SpawnTile(int prefabIndex = -1)
+        public void SpawnTile(int prefabIndex = -1, bool isStartSpawn = false)
         {
             GameObject _go;
 
             if (prefabIndex == -1)
+            {
                 _go = Instantiate(tilePrefabs[GetRandomPrefabIndex()]) as GameObject;
+            }
             else
+            {
                 _go = Instantiate(tilePrefabs[prefabIndex]) as GameObject;
+            }
 
             _go.transform.SetParent(transform);
-            _go.transform.position = Vector3.forward * _spawnZ;
-            _spawnZ += _tileLength;
+
+            if (isStartSpawn)
+            {
+                _go.transform.position = Vector3.forward * _spawnZ;
+                _spawnZ += _tileLength;
+            }
+            else
+            {
+                _go.transform.position = Vector3.forward * 105.7f;
+            }
+
+            
             _activeTiles.Add(_go);
         }
 
-        private void DeleteTile()
+        public void DeleteTile()
         {
             Destroy(_activeTiles[0]);
             _activeTiles.RemoveAt(0);
