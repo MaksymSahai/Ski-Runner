@@ -17,13 +17,18 @@ namespace Player
 
         internal void MoveLeftAnimation()
         {
+            _animator.SetTrigger("MoveLeft");
+        }
 
+        internal void MoveRightAnimation()
+        {
+            _animator.SetTrigger("MoveRight");
         }
 
         internal void DeadAnimation()
         {
-            _animator.SetTrigger("Dead");
             _animator.SetBool("IsRun", false);
+            _animator.SetTrigger("Dead");
         }
 
         internal void StartGame(bool isStartGame)
@@ -32,6 +37,11 @@ namespace Player
                 StartCoroutine(StopStartGame(_cameraMotor.AnimationDuration));
             else
                 StartCoroutine(StopStartGame(3));
+        }
+
+        internal float GetSpeed()
+        {
+            return _animator.speed;
         }
 
         private IEnumerator StopStartGame(float second)
