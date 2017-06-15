@@ -41,9 +41,11 @@ public class SwipeHandler : MonoBehaviour, IBeginDragHandler, IDragHandler
         if (eventData.delta.x > 0 && _player.transform.position.x < 1.55f)
         {
             _animationController.MoveRightAnimation();
-            Vector3 _position = _player.transform.position;
-            _position.x += 1.55f;
-            _player.transform.position = _position;
+            _endPosition.x += 1.55f;
+            _isMoveLeft = true;
+            //Vector3 _position = _player.transform.position;
+            //_position.x += 1.55f;
+            //_player.transform.position = _position;
 
         }
         else if (eventData.delta.x < 0 && _player.transform.position.x > -1.55f)
