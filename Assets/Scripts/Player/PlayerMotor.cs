@@ -16,27 +16,26 @@ namespace Player
         public bool IsDead { get { return _isDead; } }
 
         private ScoreHelper _scoreHealper;
+        private AnimationController _animationController;
 
         void Start()
         {
             _scoreHealper = GetComponent<ScoreHelper>();
-        }
-
-
-        void Update()
-        {
+            _animationController = GetComponent<AnimationController>();
+            _animationController.StartGame(isStartGame: true);
         }
 
         public void SetSpeed(float modifier)
         {
             _speed = (_speed + (modifier / 10) * -1)/2;
-            Debug.Log(_speed);
+            _animationController.StartGame(isStartGame: false);
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnTriggerEnter(Collider other)
         {
-            if (collision.gameObject.tag == StringConstants.EnemyTag)
+            if (other.gameObject.tag == StringConstants.EnemyTag)
             {
+                _animationController.DeadAnimation();
                 Death();
             }
         }
@@ -44,8 +43,6 @@ namespace Player
         private void Death()
         {
             _isDead = true;
-            Debug.Log(_isDead);
-            Debug.Log("Dead");
             _scoreHealper.OnDeath();
         }
     }
